@@ -15,6 +15,8 @@ interface ParsedLink {
     startColumn?: number;
     /** 结束行 (1-based)，与 startLine 一起构成范围选中 */
     endLine?: number;
+    /** 结束列 (1-based)，与 startColumn 一起构成精准范围选中 */
+    endColumn?: number;
     /** 链接在 comment 文本内的起始偏移 */
     offsetInComment: number;
     /** 链接在 comment 文本内的长度 */
@@ -203,25 +205,25 @@ function parseTarget(raw: string): ParsedLink | null {
     filePath = filePath.trim();
     if (!filePath) return null;
 
-    // 解析 fragment → startLine/startColumn/endLine
+    // 解析 fragment → startLine/startColumn/endLine/endColumn
+    // VS Code 标准格式：L5 | L5,10 | L5-L10 | L5,10-L10,20
     let startLine: number | undefined;
     let startColumn: number | undefined;
     let endLine: number | undefined;
+    let endColumn: number | undefined;
 
     if (fragment) {
-        const fragRe = /^L?(\d+)(?:[-,](\d+))?$/i;
+        //             ── 起始 ──          ───── 结束（可选）─────
+        //             L? 行      ,列?       - L? 行      ,列?
+        const fragRe = /^L?(?<sl>\d+)(?:,(?<sc>\d+))?(?:-L?(?<el>\d+)(?:,(?<ec>\d+))?)?$/i;
         const fMatch = fragRe.exec(fragment.trim());
-        if (fMatch) {
-            startLine = parseInt(fMatch[1], 10);
-            if (fMatch[2] !== undefined) {
-                const n2 = parseInt(fMatch[2], 10);
-                if (fragment.includes(',')) {
-                    // L1,2 → 行+列
-                    startColumn = n2;
-                } else {
-                    // L1-L2 → 行范围
-                    endLine = n2;
-                }
+        if (fMatch?.groups) {
+            const g = fMatch.groups;
+            startLine = parseInt(g.sl, 10);
+            if (g.sc !== undefined) startColumn = parseInt(g.sc, 10);
+            if (g.el !== undefined) {
+                endLine = parseInt(g.el, 10);
+                if (g.ec !== undefined) endColumn = parseInt(g.ec, 10);
             }
         }
     }
@@ -232,6 +234,7 @@ function parseTarget(raw: string): ParsedLink | null {
         startLine,
         startColumn,
         endLine,
+        endColumn,
         offsetInComment: 0,
         length: raw.length,
         rawText: raw,
@@ -269,11 +272,21 @@ function resolveLinkUri(link: ParsedLink, docDir: string): vscode.Uri | null {
 
     let uri = vscode.Uri.file(fullPath);
 
-    // VS Code 用 #Lline,col 的 fragment 做导航
+    // VS Code 标准 fragment 格式：
+    //   L10           → 跳转到第 10 行
+    //   L10,5         → 跳转到第 10 行第 5 列
+    //   L10-L20       → 选中第 10 行到第 20 行
+    //   L10,5-L20,8   → 精准选中 (10,5) 到 (20,8)
     if (link.startLine !== undefined) {
         let frag = `L${link.startLine}`;
         if (link.startColumn !== undefined) {
             frag += `,${link.startColumn}`;
+        }
+        if (link.endLine !== undefined) {
+            frag += `-L${link.endLine}`;
+            if (link.endColumn !== undefined) {
+                frag += `,${link.endColumn}`;
+            }
         }
         uri = uri.with({ fragment: frag });
     }
