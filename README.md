@@ -1,4 +1,5 @@
 # Comment Link Jump
+[简体中文](./README.zh-cn.md)
 
 Make links in code comments clickable — **Ctrl+Click** to jump, **Ctrl+Alt+Click** to open to the side.
 

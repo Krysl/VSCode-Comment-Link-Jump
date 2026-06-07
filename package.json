@@ -4,6 +4,7 @@
   "description": "%description%",
   "version": "0.0.1",
   "publisher": "krysl",
+  "repository": "https://github.com/Krysl/VSCode-Comment-Link-Jump",
   "engines": {
     "vscode": "^1.85.0"
   },
