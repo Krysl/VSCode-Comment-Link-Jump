@@ -343,7 +343,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         // 注册重载命令（同时也让扩展在命令面板中可见）
         context.subscriptions.push(
-            vscode.commands.registerCommand('doc-link-jump.reload', () => {
+            vscode.commands.registerCommand('comment-link-jump.reload', () => {
                 vscode.window.showInformationMessage(vscode.l10n.t('info.active'));
             })
         );

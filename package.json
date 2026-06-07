@@ -1,5 +1,5 @@
 {
-  "name": "doc-link-jump",
+  "name": "comment-link-jump",
   "displayName": "%displayName%",
   "description": "%description%",
   "version": "0.0.1",
@@ -18,7 +18,7 @@
   "contributes": {
     "commands": [
       {
-        "command": "doc-link-jump.reload",
+        "command": "comment-link-jump.reload",
         "title": "%command.reload.title%"
       }
     ]
