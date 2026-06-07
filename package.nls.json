@@ -1,0 +1,5 @@
+{
+  "displayName": "Doc Link Jump",
+  "description": "Make links in code comments clickable — Ctrl+Click to jump, Ctrl+Alt+Click to open to the side",
+  "command.reload.title": "Doc Link Jump: Reload Providers"
+}

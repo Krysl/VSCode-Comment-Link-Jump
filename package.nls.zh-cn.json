@@ -1,0 +1,5 @@
+{
+  "displayName": "文档链接跳转",
+  "description": "让代码注释中的链接可点击 — Ctrl+点击跳转，Ctrl+Alt+点击在侧边打开",
+  "command.reload.title": "文档链接跳转: 重新加载提供器"
+}

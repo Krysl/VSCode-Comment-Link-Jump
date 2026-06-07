@@ -1,0 +1,7 @@
+{
+  "tooltip.jumpTo": "跳转到: {0}{1}",
+  "tooltip.fragment": " #{0}",
+  "info.active": "Doc Link Jump 已激活。",
+  "log.activated": "Doc Link Jump 已激活",
+  "log.activationFailed": "Doc Link Jump 激活失败:"
+}

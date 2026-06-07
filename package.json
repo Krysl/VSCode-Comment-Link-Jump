@@ -1,7 +1,7 @@
 {
   "name": "doc-link-jump",
-  "displayName": "Doc Link Jump",
-  "description": "Make links in code comments clickable — Ctrl+Click to jump, Ctrl+Alt+Click to open to the side",
+  "displayName": "%displayName%",
+  "description": "%description%",
   "version": "0.0.1",
   "publisher": "krysl",
   "engines": {
@@ -14,11 +14,12 @@
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
+  "l10n": "./l10n",
   "contributes": {
     "commands": [
       {
         "command": "doc-link-jump.reload",
-        "title": "Doc Link Jump: Reload Providers"
+        "title": "%command.reload.title%"
       }
     ]
   },
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@types/node": "^25.9.2",
     "@types/vscode": "^1.85.0",
+    "@vscode/l10n-dev": "^0.0.35",
     "typescript": "^5.3.0"
   }
 }

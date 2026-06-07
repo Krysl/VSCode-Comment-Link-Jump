@@ -321,7 +321,7 @@ class DocLinkProvider implements vscode.DocumentLinkProvider {
                 );
 
                 const docLink = new vscode.DocumentLink(docRange, targetUri);
-                docLink.tooltip = `跳转到: ${targetUri.fsPath}${targetUri.fragment ? ' ' + targetUri.fragment : ''}`;
+                docLink.tooltip = vscode.l10n.t('tooltip.jumpTo', targetUri.fsPath, targetUri.fragment ? vscode.l10n.t('tooltip.fragment', targetUri.fragment) : '');
                 docLinks.push(docLink);
             }
         }
@@ -344,13 +344,13 @@ export function activate(context: vscode.ExtensionContext) {
         // 注册重载命令（同时也让扩展在命令面板中可见）
         context.subscriptions.push(
             vscode.commands.registerCommand('doc-link-jump.reload', () => {
-                vscode.window.showInformationMessage('Doc Link Jump is active.');
+                vscode.window.showInformationMessage(vscode.l10n.t('info.active'));
             })
         );
 
-        console.log('Doc Link Jump 已激活');
+        console.log(vscode.l10n.t('log.activated'));
     } catch (err) {
-        console.error('Doc Link Jump 激活失败:', err);
+        console.error(vscode.l10n.t('log.activationFailed'), err);
     }
 }
 
